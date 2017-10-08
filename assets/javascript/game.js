@@ -1,6 +1,8 @@
 
     // This is the word bank
-    var words = ["animal", "dog"];
+    var words = ["Smirnoff", "Grey Goose", "Ciroc", "Capitan Morgan", "Kraken", "Malibu",
+     "Bacardi", "Patron", "Don Julio", "Jose Cuervo", "Hendricks", "Bombay", "Fireball", "Jagermeister"
+     , "Jack Daniels", "Crown Royal", "Hennessy", "Jameson"];
 
     var currentWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
 
@@ -20,8 +22,6 @@
     // empty array for the blanks
     var progressWord = [];
 
-    // This is an array that we will push the letters from the current word to
-    // for comparison of whether the player's guess is correct or not
     var mysteryWord = [];
     var i;
 
@@ -34,10 +34,8 @@
     }
     document.getElementById("word-guess").innerHTML = progressWord.join(" ");
 
-    // function evaluating the positions of the given letter in the currentWord string
-    // return empty array in case of failure
     function letterInWord(letter) {
-        // the array that will contain the char positions in the currentWord that has the 
+        
         var positions = new Array();
         for (i = 0 ; i < currentWord.length; i++) {
             if (currentWord[i] === letter)
@@ -57,8 +55,7 @@
         return toGess;
     }
 
-    // These are the key events used to play and to document the letters already used and/or
-    // letters in the answers
+    
     document.onkeyup = function (event) {
         var letter = event.key;
         var lettersGuessed = letter.toLocaleUpperCase();
@@ -69,7 +66,7 @@
         var positions = letterInWord(lettersGuessed);
 
 
-        // This will alert correct and compare the letter guessed with the current word
+        
         if (positions.length) {
             console.log("User has pressed a letter from word: " + letter);
 
@@ -80,7 +77,6 @@
             // replace progress Word underscore with letter pressed
             document.getElementById("word-guess").innerHTML = progressWord.join(" ");
         } else {
-            // alert("WRONG!");
             document.getElementById("letters-guessed").innerHTML += lettersGuessed + " ";
 
             // subtract a point from guesses left
@@ -88,16 +84,25 @@
             document.getElementById("guesses-left").textContent = "Guesses Left: " + guessesLeft;
         }
 
-        // This code will tell the user the game is over along with a message about
-        // their win streak, then it will reset the game while quickly showing
-        // what the word was
-        if (guessesLeft < 1) {
+
+        if (guessesLeft === 0) {
    
+            
             loss = loss + 1;
-            currentWord.toUpperCase();
+            
             document.getElementById("losses").innerHTML = "Losses: " + loss;
+            
             guessesLeft = 10;
+            
             document.getElementById("letters-guessed").innerHTML = resetLettersGuessed;
+            
+            currentWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+            
+            progressWord = [];
+            for (i = 0; i < currentWord.length; i++) {
+            progressWord.push("__");
+        }
+
 
 
         }
@@ -107,6 +112,8 @@
         if (lettersToGuess() == 0) {
 
         	alert("You Win!");
+            
+
 
 
 
@@ -118,6 +125,7 @@
             document.getElementById("letters-guessed").innerHTML = resetLettersGuessed;
 
             // This code generates a new word to guess and then pushes out the blanks again
+            currentWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
             
 
             progressWord = [];
@@ -129,5 +137,6 @@
             // Add to the win total
             wins++;
             document.getElementById("wins").innerHTML = "Wins: " + wins;
+            
         }
     }
